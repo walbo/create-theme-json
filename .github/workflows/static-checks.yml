@@ -1,0 +1,38 @@
+name: Static Analysis (Linting...)
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+        paths:
+            - '**.ts'
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+    # The concurrency group contains the workflow name and the branch name for pull requests
+    # or the commit hash for any other events.
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+    cancel-in-progress: true
+
+jobs:
+    check:
+        name: JavaScript
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@25316bbc1f10ac9d8798711f44914b1cf3c4e954
+              with:
+                  node-version: 16.x
+                  cache: npm
+
+            - name: Npm install
+              run: |
+                  npm ci
+
+            - name: Lint JavaScript and Styles
+              run: npm run lint
