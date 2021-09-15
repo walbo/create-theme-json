@@ -1,0 +1,7 @@
+[
+	{
+		"name": "my-custom-template",
+		"title": "The template title",
+		"postTypes": ["page", "post", "my-cpt"]
+	}
+]

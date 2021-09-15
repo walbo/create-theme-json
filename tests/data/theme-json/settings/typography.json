@@ -1,0 +1,33 @@
+{
+	"customFontSize": true,
+	"customFontStyle": true,
+	"customFontWeight": true,
+	"customLineHeight": false,
+	"customTextDecorations": true,
+	"customTextTransforms": true,
+	"dropCap": true,
+	"fontFamilies": [
+		{
+			"fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Oxygen-Sans,Ubuntu,Cantarell, \"Helvetica Neue\",sans-serif",
+			"slug": "system-font",
+			"name": "System Font"
+		},
+		{
+			"fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
+			"slug": "helvetica-arial",
+			"name": "Helvetica or Arial"
+		}
+	],
+	"fontSizes": [
+		{
+			"slug": "normal",
+			"size": 16,
+			"name": "Normal"
+		},
+		{
+			"slug": "big",
+			"size": 32,
+			"name": "Big"
+		}
+	]
+}

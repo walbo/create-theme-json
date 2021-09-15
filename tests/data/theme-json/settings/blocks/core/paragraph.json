@@ -1,0 +1,21 @@
+{
+	"border": {},
+	"color": {
+		"palette": [
+			{
+				"slug": "black",
+				"color": "#000000",
+				"name": "Black"
+			},
+			{
+				"slug": "white",
+				"color": "#ffffff",
+				"name": "White"
+			}
+		]
+	},
+	"custom": {},
+	"layout": {},
+	"spacing": {},
+	"typography": {}
+}
