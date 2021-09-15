@@ -1,3 +1,12 @@
 #!/usr/bin/env node
 
-process.exit(0);
+/**
+ * Internal dependencies
+ */
+import { getNodeArgsFromCLI, spawnScript } from '../utils';
+
+const { scriptName, scriptArgs, nodeArgs } = getNodeArgsFromCLI();
+
+if (scriptName) {
+	spawnScript(scriptName, scriptArgs, nodeArgs);
+}
