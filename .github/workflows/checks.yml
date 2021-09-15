@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
     lint:
-        name: JavaScript
+        name: Lint
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
