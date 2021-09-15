@@ -1,0 +1,42 @@
+{
+	"name": "theme-json",
+	"version": "0.0.1",
+	"description": "Split WordPress theme.json into smaller files.",
+	"author": "Dekode Interaktiv AS",
+	"license": "GPL-2.0-or-later",
+	"type": "module",
+	"engines": {
+		"node": ">=16",
+		"npm": ">=6.9"
+	},
+	"scripts": {
+		"build": "del-cli ./packages/create/dist && tsc -p ./packages/create/tsconfig.json && chmod u+x ./packages/create/dist/bin/create-theme-json.mjs",
+		"format": "prettier --write .",
+		"test": "jest",
+		"test:build": "npm run build && create-theme-json build"
+	},
+	"workspaces": [
+		"packages/*"
+	],
+	"dependencies": {
+		"@theme-json/create": "*"
+	},
+	"devDependencies": {
+		"@types/cross-spawn": "6.0.2",
+		"@types/js-yaml": "^4.0.5",
+		"@types/lodash": "^4.14.177",
+		"@typescript-eslint/eslint-plugin": "^4.31.1",
+		"@typescript-eslint/parser": "^4.31.1",
+		"del-cli": "4.0.1",
+		"jest": "29.5.0",
+		"js-yaml": "^4.1.0",
+		"lerna": "^6.6.2",
+		"prettier": "2.8.8",
+		"typescript": "^5.0.4"
+	},
+	"theme-json": {
+		"src": "./tests/data/theme-json",
+		"addSchema": false,
+		"pretty": true
+	}
+}
