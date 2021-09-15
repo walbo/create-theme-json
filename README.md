@@ -1,4 +1,4 @@
-# create-theme-json
+# Create Theme Json
 
 File stucture:
 
