@@ -4,27 +4,34 @@ File stucture:
 
 ```
 theme-json
+│   custom-templates.json
+│   template-parts.json
 │
 └───settings
-│   │   layout.json
+│   │   border.json
 │   │   color.json
+│   │   custom.json
+│   │   layout.json
+│   │   spacing.json
 │   │   typography.json
 │   │
 │   └───blocks
 │       └───core
 │           │   paragraph.json
-│           │   cover.json
+│           │   heading.json
 │           │   ...
 │
 └───styles
+    │   border.json
     │   color.json
-    │   typography.json
     │   elements.json
+    │   spacing.json
+    │   typography.json
     │
     └───blocks
         └───core
             │   paragraph.json
-            │   cover.json
+            │   heading.json
             │   ...
 ```
 
