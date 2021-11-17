@@ -35,9 +35,11 @@
 		"format": "prettier --write .",
 		"lint": "eslint .",
 		"prepare": "husky install && npm run build",
-		"test": "jest"
+		"test": "jest",
+		"test:build": "node dist/scripts/build.js"
 	},
 	"dependencies": {
-		"cross-spawn": "^7.0.3"
+		"cross-spawn": "^7.0.3",
+		"fast-glob": "^3.2.7"
 	}
 }

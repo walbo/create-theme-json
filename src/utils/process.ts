@@ -9,3 +9,4 @@ export const getArgsFromCLI = (excludePrefixes?: string[]) => {
 };
 
 export const exit = process.exit;
+export const getCurrentWorkingDirectory = process.cwd;

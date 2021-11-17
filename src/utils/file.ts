@@ -12,5 +12,5 @@ export const hasScriptFile = (scriptName: string) =>
 
 export const getScripts = (): string[] =>
 	readdirSync(path.join(path.dirname(__dirname), 'scripts'))
-		.filter((f: string) => path.extname(f) === '.js')
-		.map((f: string) => path.basename(f, '.js'));
+		.filter((f) => path.extname(f) === '.js')
+		.map((f) => path.basename(f, '.js'));
