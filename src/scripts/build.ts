@@ -31,12 +31,15 @@ async function build() {
 			const destination = file.replace(root, '').replace('.json', '');
 			const splittedDestination = destination.split('/blocks/');
 
-			let dest = splittedDestination[0].split('/');
-			if (splittedDestination.length !== 1) {
-				dest = [...dest, 'blocks', splittedDestination[1]];
-			}
+			if (splittedDestination[0]) {
+				let dest = splittedDestination[0].split('/');
 
-			set(previousValue, dest, config);
+				if (splittedDestination[1]) {
+					dest = [...dest, 'blocks', splittedDestination[1]];
+				}
+
+				set(previousValue, dest, config);
+			}
 		} catch (err) {
 			console.log(file, err);
 		}
