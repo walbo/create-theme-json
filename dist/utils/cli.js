@@ -46,7 +46,7 @@ const spawnScript = (scriptName, args = [], nodeArgs = []) => {
             'Perhaps you need to update create-theme-json?');
         (0, process_1.exit)(1);
     }
-    const { signal, status } = cross_spawn_1.default.sync('node', [...nodeArgs, (0, file_1.fromScriptsRoot)(scriptName), ...args], {
+    const { signal, status } = (0, cross_spawn_1.sync)('node', [...nodeArgs, (0, file_1.fromScriptsRoot)(scriptName), ...args], {
         stdio: 'inherit',
     });
     if (signal) {

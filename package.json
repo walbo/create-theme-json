@@ -37,7 +37,7 @@
 		"lint": "eslint .",
 		"prepare": "husky install && npm run build",
 		"test": "jest",
-		"test:build": "node dist/scripts/build.js"
+		"test:build": "node dist/bin/create-theme-json.js build"
 	},
 	"dependencies": {
 		"cross-spawn": "^7.0.3",

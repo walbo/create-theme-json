@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import spawn from 'cross-spawn';
+import { sync as spawnSync } from 'cross-spawn';
 
 /**
  * Internal dependencies
@@ -57,7 +57,7 @@ export const spawnScript = (
 		exit(1);
 	}
 
-	const { signal, status } = spawn.sync(
+	const { signal, status } = spawnSync(
 		'node',
 		[...nodeArgs, fromScriptsRoot(scriptName), ...args],
 		{
