@@ -11,7 +11,7 @@ import { readFileSync, writeFileSync } from 'fs';
  */
 import { getCurrentWorkingDirectory } from '../utils';
 
-async function build() {
+function build() {
 	const root = join(
 		getCurrentWorkingDirectory(),
 		'tests',
