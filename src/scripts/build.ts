@@ -3,13 +3,18 @@
  */
 import { sync as fastGlob } from 'fast-glob';
 import { join } from 'path';
-import { set } from 'lodash';
+import { set, camelCase } from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
 
 /**
  * Internal dependencies
  */
 import { getCurrentWorkingDirectory } from '../utils';
+
+const initialThemeJson = {
+	$schema: 'https://schemas.wp.org/trunk/theme.json',
+	version: 1,
+};
 
 function build() {
 	const root = join(
@@ -33,6 +38,7 @@ function build() {
 
 			if (splittedDestination[0]) {
 				let dest = splittedDestination[0].split('/');
+				dest = dest.map(camelCase);
 
 				if (splittedDestination[1]) {
 					dest = [...dest, 'blocks', splittedDestination[1]];
@@ -45,7 +51,7 @@ function build() {
 		}
 
 		return previousValue;
-	}, {});
+	}, initialThemeJson);
 
 	writeFileSync(
 		join(getCurrentWorkingDirectory(), 'theme.json'),

@@ -11,6 +11,10 @@ const fs_1 = require("fs");
  * Internal dependencies
  */
 const utils_1 = require("../utils");
+const initialThemeJson = {
+    $schema: 'https://schemas.wp.org/trunk/theme.json',
+    version: 1,
+};
 function build() {
     const root = (0, path_1.join)((0, utils_1.getCurrentWorkingDirectory)(), 'tests', 'data', 'theme-json', '/');
     const files = (0, fast_glob_1.sync)((0, path_1.join)(root, '**/*.json'));
@@ -24,6 +28,7 @@ function build() {
             const splittedDestination = destination.split('/blocks/');
             if (splittedDestination[0]) {
                 let dest = splittedDestination[0].split('/');
+                dest = dest.map(lodash_1.camelCase);
                 if (splittedDestination[1]) {
                     dest = [...dest, 'blocks', splittedDestination[1]];
                 }
@@ -34,7 +39,7 @@ function build() {
             console.log(file, err);
         }
         return previousValue;
-    }, {});
+    }, initialThemeJson);
     (0, fs_1.writeFileSync)((0, path_1.join)((0, utils_1.getCurrentWorkingDirectory)(), 'theme.json'), JSON.stringify(themeJson, null, '\t'));
     console.log('theme.json created');
 }
