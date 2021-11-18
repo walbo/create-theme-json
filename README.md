@@ -34,5 +34,3 @@ theme-json
             │   heading.json
             │   ...
 ```
-
-Supported file formats: `json`, `yml`
