@@ -1,0 +1,22 @@
+{
+	"heading": {
+		"typography": {
+			"lineHeight": "1.25"
+		}
+	},
+	"h1": {
+		"typography": {
+			"fontSize": "var(--wp--preset--font-size--huge)"
+		}
+	},
+	"h2": {
+		"typography": {
+			"fontSize": "var(--wp--preset--font-size--big)"
+		}
+	},
+	"h3": {
+		"typography": {
+			"fontSize": "var(--wp--preset--font-size--medium)"
+		}
+	}
+}
