@@ -5,6 +5,7 @@ import { sync as fastGlob } from 'fast-glob';
 import { join } from 'path';
 import { set, camelCase } from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
+import { load as loadYaml } from 'js-yaml';
 
 /**
  * Internal dependencies
@@ -24,16 +25,25 @@ function build() {
 		'theme-json',
 		'/',
 	);
-	const files = fastGlob(join(root, '**/*.json'));
+	const files = fastGlob(join(root, '**/*.{json,yml}'));
 
 	const themeJson = files.reduce((previousValue, file) => {
 		try {
+			let config;
 			const content = readFileSync(file, {
 				encoding: 'utf-8',
 			});
-			const config = JSON.parse(content);
 
-			const destination = file.replace(root, '').replace('.json', '');
+			if (file.endsWith('.yml')) {
+				config = loadYaml(content);
+			} else {
+				config = JSON.parse(content);
+			}
+
+			const destination = file
+				.replace(root, '')
+				.replace('.json', '')
+				.replace('.yml', '');
 			const splittedDestination = destination.split('/blocks/');
 
 			if (splittedDestination[0]) {

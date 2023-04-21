@@ -7,6 +7,7 @@ const fast_glob_1 = require("fast-glob");
 const path_1 = require("path");
 const lodash_1 = require("lodash");
 const fs_1 = require("fs");
+const js_yaml_1 = require("js-yaml");
 /**
  * Internal dependencies
  */
@@ -17,14 +18,23 @@ const initialThemeJson = {
 };
 function build() {
     const root = (0, path_1.join)((0, utils_1.getCurrentWorkingDirectory)(), 'tests', 'data', 'theme-json', '/');
-    const files = (0, fast_glob_1.sync)((0, path_1.join)(root, '**/*.json'));
+    const files = (0, fast_glob_1.sync)((0, path_1.join)(root, '**/*.{json,yml}'));
     const themeJson = files.reduce((previousValue, file) => {
         try {
+            let config;
             const content = (0, fs_1.readFileSync)(file, {
                 encoding: 'utf-8',
             });
-            const config = JSON.parse(content);
-            const destination = file.replace(root, '').replace('.json', '');
+            if (file.endsWith('.yml')) {
+                config = (0, js_yaml_1.load)(content);
+            }
+            else {
+                config = JSON.parse(content);
+            }
+            const destination = file
+                .replace(root, '')
+                .replace('.json', '')
+                .replace('.yml', '');
             const splittedDestination = destination.split('/blocks/');
             if (splittedDestination[0]) {
                 let dest = splittedDestination[0].split('/');

@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@types/cross-spawn": "6.0.2",
+		"@types/js-yaml": "^4.0.5",
 		"@types/lodash": "^4.14.177",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
@@ -23,6 +24,7 @@
 		"eslint": "^7.32.0",
 		"husky": "7.0.2",
 		"jest": "27.2.0",
+		"js-yaml": "^4.1.0",
 		"lint-staged": "11.1.2",
 		"prettier": "2.4.0",
 		"typescript": "4.4.3"
@@ -37,11 +39,12 @@
 		"lint": "eslint .",
 		"prepare": "husky install && npm run build",
 		"test": "jest",
-		"test:build": "node dist/bin/create-theme-json.js build"
+		"test:build": "npm run build && node dist/bin/create-theme-json.js build"
 	},
 	"dependencies": {
 		"cross-spawn": "^7.0.3",
 		"fast-glob": "^3.2.7",
-		"lodash": "^4.17.21"
+		"lodash": "^4.17.21",
+		"read-yaml-file": "^2.1.0"
 	}
 }
