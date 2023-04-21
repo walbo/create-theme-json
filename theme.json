@@ -5,7 +5,11 @@
 		{
 			"name": "my-custom-template",
 			"title": "The template title",
-			"postTypes": ["page", "post", "my-cpt"]
+			"postTypes": [
+				"page",
+				"post",
+				"my-cpt"
+			]
 		}
 	],
 	"templateParts": [
@@ -15,19 +19,17 @@
 		}
 	],
 	"settings": {
-		"border": {
-			"customColor": false,
-			"customRadius": false,
-			"customStyle": false,
-			"customWidth": false
-		},
+		"border": {},
 		"color": {
 			"custom": true,
 			"customDuotone": true,
 			"customGradient": true,
 			"duotone": [
 				{
-					"colors": ["#000", "#FFF"],
+					"colors": [
+						"#000",
+						"#FFF"
+					],
 					"slug": "black-and-white",
 					"name": "Black and White"
 				}
