@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.spawnScript = exports.getNodeArgsFromCLI = void 0;
 /**
  * External dependencies
  */
-const cross_spawn_1 = require("cross-spawn");
+import { sync as spawnSync } from 'cross-spawn';
 /**
  * Internal dependencies
  */
-const process_1 = require("./process");
-const file_1 = require("./file");
+import { getArgsFromCLI, exit } from './process.mjs';
+import { getScripts, hasScriptFile, fromScriptsRoot } from './file.mjs';
 const handleSignal = (signal) => {
     if (signal === 'SIGKILL') {
         console.log('The script failed because the process exited too early. ' +
@@ -21,11 +18,11 @@ const handleSignal = (signal) => {
             'Someone might have called `kill` or `killall`, or the system could ' +
             'be shutting down.');
     }
-    (0, process_1.exit)(1);
+    exit(1);
 };
-const getNodeArgsFromCLI = () => {
-    const args = (0, process_1.getArgsFromCLI)();
-    const scripts = (0, file_1.getScripts)();
+export const getNodeArgsFromCLI = () => {
+    const args = getArgsFromCLI();
+    const scripts = getScripts();
     const scriptIndex = args.findIndex((arg) => scripts.includes(arg));
     return {
         nodeArgs: args.slice(0, scriptIndex),
@@ -33,25 +30,23 @@ const getNodeArgsFromCLI = () => {
         scriptArgs: args.slice(scriptIndex + 1),
     };
 };
-exports.getNodeArgsFromCLI = getNodeArgsFromCLI;
-const spawnScript = (scriptName, args = [], nodeArgs = []) => {
+export const spawnScript = (scriptName, args = [], nodeArgs = []) => {
     if (!scriptName) {
         console.log('Script name is missing.');
-        (0, process_1.exit)(1);
+        exit(1);
     }
-    if (!(0, file_1.hasScriptFile)(scriptName)) {
+    if (!hasScriptFile(scriptName)) {
         console.log('Unknown script "' +
             scriptName +
             '". ' +
             'Perhaps you need to update create-theme-json?');
-        (0, process_1.exit)(1);
+        exit(1);
     }
-    const { signal, status } = (0, cross_spawn_1.sync)('node', [...nodeArgs, (0, file_1.fromScriptsRoot)(scriptName), ...args], {
+    const { signal, status } = spawnSync('node', [...nodeArgs, fromScriptsRoot(scriptName), ...args], {
         stdio: 'inherit',
     });
     if (signal) {
         handleSignal(signal);
     }
-    (0, process_1.exit)(status || undefined);
+    exit(status || undefined);
 };
-exports.spawnScript = spawnScript;

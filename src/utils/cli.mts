@@ -6,8 +6,8 @@ import { sync as spawnSync } from 'cross-spawn';
 /**
  * Internal dependencies
  */
-import { getArgsFromCLI, exit } from './process';
-import { getScripts, hasScriptFile, fromScriptsRoot } from './file';
+import { getArgsFromCLI, exit } from './process.mjs';
+import { getScripts, hasScriptFile, fromScriptsRoot } from './file.mjs';
 
 const handleSignal = (signal: string) => {
 	if (signal === 'SIGKILL') {

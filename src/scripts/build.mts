@@ -1,23 +1,23 @@
 /**
  * External dependencies
  */
-import { sync as fastGlob } from 'fast-glob';
+import fastGlob from 'fast-glob';
 import { join } from 'path';
-import { set, camelCase } from 'lodash';
+import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
 import { load as loadYaml } from 'js-yaml';
 
 /**
  * Internal dependencies
  */
-import { getCurrentWorkingDirectory } from '../utils';
+import { getCurrentWorkingDirectory } from '../utils/index.mjs';
 
 const initialThemeJson = {
 	$schema: 'https://schemas.wp.org/trunk/theme.json',
 	version: 1,
 };
 
-function build() {
+async function build() {
 	const root = join(
 		getCurrentWorkingDirectory(),
 		'tests',
@@ -25,16 +25,25 @@ function build() {
 		'theme-json',
 		'/',
 	);
-	const files = fastGlob(join(root, '**/*.{json,yml}'));
+	const files = fastGlob.sync(join(root, '**/*.{json,yml,cjs,mjs}'));
 
-	const themeJson = files.reduce((previousValue, file) => {
+	const themeJson = await files.reduce(async (previousValue, file) => {
+		const nextValue = await previousValue;
+
 		try {
 			let config;
 			const content = readFileSync(file, {
 				encoding: 'utf-8',
 			});
 
-			if (file.endsWith('.yml')) {
+			if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
+				const importedFile = await import(file);
+				config = importedFile.default;
+
+				if (typeof config === 'function') {
+					config = config();
+				}
+			} else if (file.endsWith('.yml')) {
 				config = loadYaml(content);
 			} else {
 				config = JSON.parse(content);
@@ -43,25 +52,27 @@ function build() {
 			const destination = file
 				.replace(root, '')
 				.replace('.json', '')
-				.replace('.yml', '');
+				.replace('.yml', '')
+				.replace('.cjs', '')
+				.replace('.mjs', '');
 			const splittedDestination = destination.split('/blocks/');
 
 			if (splittedDestination[0]) {
 				let dest = splittedDestination[0].split('/');
-				dest = dest.map(camelCase);
+				dest = dest.map(_.camelCase);
 
 				if (splittedDestination[1]) {
 					dest = [...dest, 'blocks', splittedDestination[1]];
 				}
 
-				set(previousValue, dest, config);
+				_.set(nextValue, dest, config);
 			}
 		} catch (err) {
 			console.log(file, err);
 		}
 
-		return previousValue;
-	}, initialThemeJson);
+		return nextValue;
+	}, Promise.resolve(initialThemeJson));
 
 	writeFileSync(
 		join(getCurrentWorkingDirectory(), 'theme.json'),
