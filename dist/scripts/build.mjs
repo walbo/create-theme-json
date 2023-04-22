@@ -11,29 +11,33 @@ import axios from 'axios';
 /**
  * Internal dependencies
  */
-import { getCurrentWorkingDirectory, getConfig } from '../utils/index.mjs';
+import { getCurrentWorkingDirectory, getConfig, getPlugins, } from '../utils/index.mjs';
 async function build() {
     var _a;
     const config = await getConfig();
     const schemaVersion = config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
+    const schemaUrl = `https://schemas.wp.org/${schemaVersion}/theme.json`;
     const initialThemeJson = {
-        $schema: `https://schemas.wp.org/${schemaVersion}/theme.json`,
         version: 2,
     };
-    const root = join(getCurrentWorkingDirectory(), 'tests', 'data', 'theme-json', '/');
+    if (config.addSchema) {
+        initialThemeJson.$schema = schemaUrl;
+    }
+    const src = config.src.endsWith('/') ? config.src : `${config.src}/`;
+    const root = join(getCurrentWorkingDirectory(), src);
     const files = fastGlob.sync(join(root, '**/*.{json,yml,cjs,mjs,js}'));
-    const themeJson = await files.reduce(async (previousValue, file) => {
+    let themeJson = await files.reduce(async (previousValue, file) => {
         const nextValue = await previousValue;
         try {
-            let config;
+            let fileConfig;
             if (file.endsWith('.js')) {
                 throw new Error('File format not supported. Only .json, .yml, .cjs and .mjs are supported.');
             }
             if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
                 const importedFile = await import(file);
-                config = importedFile.default;
-                if (typeof config === 'function') {
-                    config = config();
+                fileConfig = importedFile.default;
+                if (typeof fileConfig === 'function') {
+                    fileConfig = fileConfig();
                 }
             }
             else {
@@ -41,10 +45,10 @@ async function build() {
                     encoding: 'utf-8',
                 });
                 if (file.endsWith('.yml')) {
-                    config = loadYaml(content);
+                    fileConfig = loadYaml(content);
                 }
                 else if (file.endsWith('.json')) {
-                    config = JSON.parse(content);
+                    fileConfig = JSON.parse(content);
                 }
             }
             const destination = file.replace(root, '').replace(/\.[^/.]+$/, '');
@@ -61,7 +65,7 @@ async function build() {
                         ...blockDest,
                     ];
                 }
-                _.set(nextValue, dest, config);
+                _.set(nextValue, dest, fileConfig);
             }
         }
         catch (err) {
@@ -69,6 +73,10 @@ async function build() {
         }
         return nextValue;
     }, Promise.resolve(initialThemeJson));
+    const plugins = await getPlugins();
+    for (const plugin of plugins) {
+        themeJson = await plugin(themeJson);
+    }
     writeFileSync(join(getCurrentWorkingDirectory(), 'theme.json'), JSON.stringify(themeJson, null, '\t'));
     if (config.validateSchema) {
         const schemaChecker = new Avj({
@@ -76,7 +84,7 @@ async function build() {
             strict: true,
             allowMatchingProperties: true,
         });
-        const schema = await axios.get('https://schemas.wp.org/trunk/theme.json');
+        const schema = await axios.get(schemaUrl);
         const validate = schemaChecker.compile(schema.data);
         const valid = validate(themeJson);
         if (!valid) {

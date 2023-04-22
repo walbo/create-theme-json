@@ -6,7 +6,7 @@
 	"license": "GPL-2.0-or-later",
 	"type": "module",
 	"engines": {
-		"node": ">=14",
+		"node": ">=16",
 		"npm": ">=6.9"
 	},
 	"files": [
@@ -43,6 +43,7 @@
 		"read-yaml-file": "^2.1.0"
 	},
 	"create-theme-json": {
-		"wpVersion": "6.2"
+		"src": "./tests/data/theme-json",
+		"addSchema": true
 	}
 }

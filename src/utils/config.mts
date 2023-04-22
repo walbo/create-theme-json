@@ -5,7 +5,10 @@ import { cosmiconfig } from 'cosmiconfig';
 
 const defaultConfig = {
 	validateSchema: true,
+	addSchema: false,
 	wpVersion: 'trunk',
+	plugins: [],
+	src: 'theme-json',
 };
 
 export async function getConfig() {
@@ -17,4 +20,16 @@ export async function getConfig() {
 		...defaultConfig,
 		...config.config,
 	};
+}
+
+export async function getPlugins() {
+	const config = await getConfig();
+	const plugins = [];
+
+	for (const plugin of config.plugins) {
+		const pluginFile = await import(plugin);
+		plugins.push(pluginFile.default);
+	}
+
+	return plugins;
 }
