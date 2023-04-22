@@ -12,14 +12,19 @@ import axios from 'axios';
 /**
  * Internal dependencies
  */
-import { getCurrentWorkingDirectory } from '../utils/index.mjs';
-
-const initialThemeJson = {
-	$schema: 'https://schemas.wp.org/trunk/theme.json',
-	version: 2,
-};
+import { getCurrentWorkingDirectory, getConfig } from '../utils/index.mjs';
 
 async function build() {
+	const config = await getConfig();
+
+	const schemaVersion =
+		config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
+
+	const initialThemeJson = {
+		$schema: `https://schemas.wp.org/${schemaVersion}/theme.json`,
+		version: 2,
+	};
+
 	const root = join(
 		getCurrentWorkingDirectory(),
 		'tests',
@@ -93,20 +98,24 @@ async function build() {
 		JSON.stringify(themeJson, null, '\t'),
 	);
 
-	const schemaChecker = new Avj({
-		allErrors: true,
-		strict: true,
-		allowMatchingProperties: true,
-	});
-	const schema = await axios.get('https://schemas.wp.org/trunk/theme.json');
-
-	const validate = schemaChecker.compile(schema.data);
-	const valid = validate(themeJson);
-
-	if (!valid) {
-		validate?.errors?.forEach((err) => {
-			console.log(err);
+	if (config.validateSchema) {
+		const schemaChecker = new Avj({
+			allErrors: true,
+			strict: true,
+			allowMatchingProperties: true,
 		});
+		const schema = await axios.get(
+			'https://schemas.wp.org/trunk/theme.json',
+		);
+
+		const validate = schemaChecker.compile(schema.data);
+		const valid = validate(themeJson);
+
+		if (!valid) {
+			validate?.errors?.forEach((err) => {
+				console.log(err);
+			});
+		}
 	}
 
 	console.log('theme.json created');

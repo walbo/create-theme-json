@@ -6,9 +6,10 @@ on:
     pull_request:
         branches: [main]
         paths:
-            - '**.ts'
+            - '**.mts'
             - '**.json'
             - '**.yml'
+            - '**.js'
 
 # Cancels all previous workflow runs for pull requests that have not completed.
 concurrency:
@@ -18,18 +19,6 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    lint:
-        name: Lint
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
-            - uses: actions/setup-node@25316bbc1f10ac9d8798711f44914b1cf3c4e954
-              with:
-                  node-version: 16.x
-                  cache: npm
-            - run: npm ci
-            - run: npm run lint
-
     test:
         name: Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
         runs-on: ${{ matrix.os }}

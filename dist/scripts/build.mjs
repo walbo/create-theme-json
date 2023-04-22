@@ -11,13 +11,15 @@ import axios from 'axios';
 /**
  * Internal dependencies
  */
-import { getCurrentWorkingDirectory } from '../utils/index.mjs';
-const initialThemeJson = {
-    $schema: 'https://schemas.wp.org/trunk/theme.json',
-    version: 2,
-};
+import { getCurrentWorkingDirectory, getConfig } from '../utils/index.mjs';
 async function build() {
     var _a;
+    const config = await getConfig();
+    const schemaVersion = config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
+    const initialThemeJson = {
+        $schema: `https://schemas.wp.org/${schemaVersion}/theme.json`,
+        version: 2,
+    };
     const root = join(getCurrentWorkingDirectory(), 'tests', 'data', 'theme-json', '/');
     const files = fastGlob.sync(join(root, '**/*.{json,yml,cjs,mjs,js}'));
     const themeJson = await files.reduce(async (previousValue, file) => {
@@ -68,18 +70,20 @@ async function build() {
         return nextValue;
     }, Promise.resolve(initialThemeJson));
     writeFileSync(join(getCurrentWorkingDirectory(), 'theme.json'), JSON.stringify(themeJson, null, '\t'));
-    const schemaChecker = new Avj({
-        allErrors: true,
-        strict: true,
-        allowMatchingProperties: true,
-    });
-    const schema = await axios.get('https://schemas.wp.org/trunk/theme.json');
-    const validate = schemaChecker.compile(schema.data);
-    const valid = validate(themeJson);
-    if (!valid) {
-        (_a = validate === null || validate === void 0 ? void 0 : validate.errors) === null || _a === void 0 ? void 0 : _a.forEach((err) => {
-            console.log(err);
+    if (config.validateSchema) {
+        const schemaChecker = new Avj({
+            allErrors: true,
+            strict: true,
+            allowMatchingProperties: true,
         });
+        const schema = await axios.get('https://schemas.wp.org/trunk/theme.json');
+        const validate = schemaChecker.compile(schema.data);
+        const valid = validate(themeJson);
+        if (!valid) {
+            (_a = validate === null || validate === void 0 ? void 0 : validate.errors) === null || _a === void 0 ? void 0 : _a.forEach((err) => {
+                console.log(err);
+            });
+        }
     }
     console.log('theme.json created');
 }
