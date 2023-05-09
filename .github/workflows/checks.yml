@@ -37,7 +37,7 @@ jobs:
                     - windows-latest
         steps:
             - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-            - uses: actions/setup-node@25316bbc1f10ac9d8798711f44914b1cf3c4e954
+            - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: npm
