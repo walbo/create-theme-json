@@ -26,6 +26,9 @@ jobs:
             fail-fast: false
             matrix:
                 node-version:
+                    - 20
+                    - 19
+                    - 18
                     - 17
                     - 16
                 os:
