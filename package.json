@@ -1,5 +1,5 @@
 {
-	"name": "create-theme-json",
+	"name": "@theme-json/create",
 	"version": "0.0.1",
 	"description": "Split WordPress theme.json into smaller files.",
 	"author": "Dekode Interaktiv AS",
@@ -42,7 +42,7 @@
 		"lodash": "^4.17.21",
 		"read-yaml-file": "^2.1.0"
 	},
-	"create-theme-json": {
+	"theme-json": {
 		"src": "./tests/data/theme-json",
 		"addSchema": true
 	}

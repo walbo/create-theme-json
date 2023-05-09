@@ -10,7 +10,7 @@ const defaultConfig = {
     src: 'theme-json',
 };
 export async function getConfig() {
-    const explorerSync = cosmiconfig('create-theme-json');
+    const explorerSync = cosmiconfig('theme-json');
     const config = (await explorerSync.search()) || { config: {} };
     return {
         ...defaultConfig,
