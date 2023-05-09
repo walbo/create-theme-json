@@ -1,5 +1,5 @@
 {
-	"name": "@theme-json/create",
+	"name": "theme-json",
 	"version": "0.0.1",
 	"description": "Split WordPress theme.json into smaller files.",
 	"author": "Dekode Interaktiv AS",
@@ -9,11 +9,17 @@
 		"node": ">=16",
 		"npm": ">=6.9"
 	},
-	"files": [
-		"dist"
+	"scripts": {
+		"build": "del-cli ./packages/create/dist && tsc -p ./packages/create/tsconfig.json && chmod u+x ./packages/create/dist/bin/create-theme-json.mjs",
+		"format": "prettier --write .",
+		"test": "jest",
+		"test:build": "npm run build && create-theme-json build"
+	},
+	"workspaces": [
+		"packages/*"
 	],
-	"bin": {
-		"create-theme-json": "./dist/bin/create-theme-json.js"
+	"dependencies": {
+		"@theme-json/create": "*"
 	},
 	"devDependencies": {
 		"@types/cross-spawn": "6.0.2",
@@ -24,23 +30,9 @@
 		"del-cli": "4.0.1",
 		"jest": "27.2.0",
 		"js-yaml": "^4.1.0",
+		"lerna": "^6.6.2",
 		"prettier": "2.4.0",
 		"typescript": "^5.0.4"
-	},
-	"scripts": {
-		"build": "del-cli dist && tsc",
-		"format": "prettier --write .",
-		"test": "jest",
-		"test:build": "npm run build && node dist/bin/create-theme-json.mjs build"
-	},
-	"dependencies": {
-		"ajv-draft-04": "^1.0.0",
-		"axios": "^1.3.6",
-		"cosmiconfig": "^8.1.3",
-		"cross-spawn": "^7.0.3",
-		"fast-glob": "^3.2.7",
-		"lodash": "^4.17.21",
-		"read-yaml-file": "^2.1.0"
 	},
 	"theme-json": {
 		"src": "./tests/data/theme-json",

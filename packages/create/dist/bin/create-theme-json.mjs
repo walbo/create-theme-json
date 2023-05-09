@@ -7,4 +7,3 @@ const { scriptName, scriptArgs, nodeArgs } = getNodeArgsFromCLI();
 if (scriptName) {
     spawnScript(scriptName, scriptArgs, nodeArgs);
 }
-console.log('asd', getNodeArgsFromCLI());
