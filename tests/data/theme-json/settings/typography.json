@@ -1,16 +1,4 @@
 {
 	"customFontSize": true,
-	"dropCap": false,
-	"fontFamilies": [
-		{
-			"fontFamily": "-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Oxygen-Sans,Ubuntu,Cantarell, \"Helvetica Neue\",sans-serif",
-			"slug": "system-font",
-			"name": "System Font"
-		},
-		{
-			"fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
-			"slug": "helvetica-arial",
-			"name": "Helvetica or Arial"
-		}
-	]
+	"dropCap": false
 }
