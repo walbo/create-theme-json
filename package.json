@@ -27,7 +27,7 @@
 		"@types/lodash": "^4.14.177",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
-		"del-cli": "4.0.1",
+		"del-cli": "5.0.0",
 		"jest": "29.5.0",
 		"js-yaml": "^4.1.0",
 		"lerna": "^6.6.2",
