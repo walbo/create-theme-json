@@ -1,0 +1,17 @@
+{
+	"name": "@theme-json/postcss",
+	"version": "0.0.1",
+	"description": "Split WordPress theme.json into smaller files.",
+	"author": "Dekode Interaktiv AS",
+	"license": "GPL-2.0-or-later",
+	"type": "module",
+	"main": "dist/index.mjs",
+	"engines": {
+		"node": ">=16",
+		"npm": ">=6.9"
+	},
+	"files": [
+		"dist"
+	],
+	"dependencies": {}
+}

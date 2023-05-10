@@ -15,6 +15,7 @@ import { getCurrentWorkingDirectory, getConfig, getPlugins, } from '../utils/ind
 async function build() {
     var _a;
     const config = await getConfig();
+    const plugins = await getPlugins();
     const schemaVersion = config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
     const schemaUrl = `https://schemas.wp.org/${schemaVersion}/theme.json`;
     const initialThemeJson = {
@@ -72,9 +73,10 @@ async function build() {
         }
         return nextValue;
     }, Promise.resolve(initialThemeJson));
-    const plugins = await getPlugins();
     for (const plugin of plugins) {
-        themeJson = await plugin(themeJson);
+        if (typeof (plugin === null || plugin === void 0 ? void 0 : plugin.themeJson) === 'function') {
+            themeJson = await plugin.themeJson(themeJson);
+        }
     }
     writeFileSync(join(getCurrentWorkingDirectory(), config.dest), JSON.stringify(themeJson, null, config.pretty ? '\t' : ''));
     if (config.validateSchema) {

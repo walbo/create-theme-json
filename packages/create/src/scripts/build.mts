@@ -20,6 +20,7 @@ import {
 
 async function build() {
 	const config = await getConfig();
+	const plugins = await getPlugins();
 
 	const schemaVersion =
 		config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
@@ -104,10 +105,10 @@ async function build() {
 		return nextValue;
 	}, Promise.resolve(initialThemeJson));
 
-	const plugins = await getPlugins();
-
 	for (const plugin of plugins) {
-		themeJson = await plugin(themeJson);
+		if (typeof plugin?.themeJson === 'function') {
+			themeJson = await plugin.themeJson(themeJson);
+		}
 	}
 
 	writeFileSync(
