@@ -5,7 +5,6 @@ import fastGlob from 'fast-glob';
 import { join } from 'path';
 import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
-import { load as loadYaml } from 'js-yaml';
 import Avj from 'ajv-draft-04';
 import axios from 'axios';
 
@@ -35,7 +34,7 @@ async function build() {
 
 	const src = config.src.endsWith('/') ? config.src : `${config.src}/`;
 	const root = join(getCurrentWorkingDirectory(), src);
-	const files = fastGlob.sync(join(root, '**/*.{json,yml,cjs,mjs,js}'));
+	const files = fastGlob.sync(join(root, '**/*.{json,cjs,mjs,js}'));
 
 	let themeJson = await files.reduce(async (previousValue, file) => {
 		const nextValue = await previousValue;
@@ -45,7 +44,7 @@ async function build() {
 
 			if (file.endsWith('.js')) {
 				throw new Error(
-					'File format not supported. Only .json, .yml, .cjs and .mjs are supported.',
+					'File format not supported. Only .json, .cjs and .mjs are supported.',
 				);
 			}
 
@@ -61,9 +60,7 @@ async function build() {
 					encoding: 'utf-8',
 				});
 
-				if (file.endsWith('.yml')) {
-					fileConfig = loadYaml(content);
-				} else if (file.endsWith('.json')) {
+				if (file.endsWith('.json')) {
 					fileConfig = JSON.parse(content);
 				}
 			}
