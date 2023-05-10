@@ -22,6 +22,7 @@
 		"cross-spawn": "^7.0.3",
 		"fast-glob": "^3.2.7",
 		"lodash": "^4.17.21",
-		"read-yaml-file": "^2.1.0"
+		"read-yaml-file": "^2.1.0",
+		"picocolors": "^1.0.0"
 	}
 }

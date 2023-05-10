@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
 import Avj from 'ajv-draft-04';
 import axios from 'axios';
+import pc from 'picocolors';
 
 /**
  * Internal dependencies
@@ -32,9 +33,11 @@ async function build() {
 		initialThemeJson.$schema = schemaUrl;
 	}
 
+	const supportedFileFormats = ['json', 'cjs', 'mjs'];
+
 	const src = config.src.endsWith('/') ? config.src : `${config.src}/`;
 	const root = join(getCurrentWorkingDirectory(), src);
-	const files = fastGlob.sync(join(root, '**/*.{json,cjs,mjs,js}'));
+	const files = fastGlob.sync(join(root, `**/*`));
 
 	let themeJson = await files.reduce(async (previousValue, file) => {
 		const nextValue = await previousValue;
@@ -42,10 +45,18 @@ async function build() {
 		try {
 			let fileConfig;
 
-			if (file.endsWith('.js')) {
-				throw new Error(
-					'File format not supported. Only .json, .cjs and .mjs are supported.',
+			if (!supportedFileFormats.includes(file?.split('.').pop() || '')) {
+				console.log(
+					pc.red(
+						`${file.replace(
+							root,
+							'',
+						)}: File not supported. Supported extensions are: ${supportedFileFormats.join(
+							', ',
+						)}.\n`,
+					),
 				);
+				process.exit(1);
 			}
 
 			if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
