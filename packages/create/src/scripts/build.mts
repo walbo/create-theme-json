@@ -103,7 +103,7 @@ async function build() {
 	}
 
 	writeFileSync(
-		join(getCurrentWorkingDirectory(), 'theme.json'),
+		join(getCurrentWorkingDirectory(), config.dest),
 		JSON.stringify(themeJson, null, config.pretty ? '\t' : ''),
 	);
 

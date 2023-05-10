@@ -7,6 +7,7 @@ const defaultConfig = {
     plugins: [],
     pretty: false,
     src: 'theme-json',
+    dest: 'theme.json',
     validateSchema: true,
     version: 2,
     wpVersion: 'trunk',

@@ -36,6 +36,7 @@
 	},
 	"theme-json": {
 		"src": "./tests/data/theme-json",
+		"dest": "./tests/theme.json",
 		"addSchema": false,
 		"pretty": true
 	}

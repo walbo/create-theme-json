@@ -77,7 +77,7 @@ async function build() {
     for (const plugin of plugins) {
         themeJson = await plugin(themeJson);
     }
-    writeFileSync(join(getCurrentWorkingDirectory(), 'theme.json'), JSON.stringify(themeJson, null, config.pretty ? '\t' : ''));
+    writeFileSync(join(getCurrentWorkingDirectory(), config.dest), JSON.stringify(themeJson, null, config.pretty ? '\t' : ''));
     if (config.validateSchema) {
         const schemaChecker = new Avj({
             allErrors: true,
