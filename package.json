@@ -15,7 +15,8 @@
 		"build": "npm run build:create && npm run build:postcss",
 		"format": "prettier --write .",
 		"test": "jest",
-		"test:build": "npm run build && create-theme-json build"
+		"test:build": "npm run build && create-theme-json build",
+		"test:watch": "npm run build && create-theme-json watch"
 	},
 	"workspaces": [
 		"packages/*"
