@@ -43,4 +43,4 @@ jobs:
                   cache: npm
             - run: npm ci
             - run: npm run test:build
-            - run: npm test -- --passWithNoTests
+            - run: npm test
