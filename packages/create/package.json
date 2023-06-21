@@ -1,6 +1,6 @@
 {
 	"name": "@theme-json/create",
-	"version": "0.0.0",
+	"version": "0.0.1-alpha.0",
 	"description": "Split WordPress theme.json into smaller files.",
 	"author": "Dekode Interaktiv AS",
 	"license": "GPL-2.0-or-later",
