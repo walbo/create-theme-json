@@ -26,8 +26,7 @@ Example:
 		"src": "theme-json",
 		"dest": "theme.json",
 		"pretty": false,
-		"version": 2,
-		"wpVersion": "trunk"
+		"version": 2
 	}
 }
 ```
