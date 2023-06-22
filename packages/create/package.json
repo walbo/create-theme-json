@@ -3,6 +3,13 @@
 	"version": "0.0.1-alpha.0",
 	"description": "Split WordPress theme.json into smaller files.",
 	"author": "Petter Walbø Johnsgård",
+	"homepage": "https://github.com/walbo/create-theme-json/blob/main/packages/create/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/walbo/create-theme-json.git",
+		"directory": "packages/create"
+	},
+	"bugs": "https://github.com/walbo/create-theme-json/issues",
 	"license": "GPL-2.0-or-later",
 	"type": "module",
 	"engines": {
