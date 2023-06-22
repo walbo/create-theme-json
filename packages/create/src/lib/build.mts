@@ -12,33 +12,27 @@ import pc from 'picocolors';
 /**
  * Internal dependencies
  */
-import {
-	getCurrentWorkingDirectory,
-	getConfig,
-	addTrailingSlash,
-} from '../utils/index.mjs';
+import { getConfig } from '../utils/index.mjs';
 
 async function build() {
 	const configs = await getConfig();
 
 	for (const config of configs) {
+		const { src, version } = config;
+
 		const schemaVersion =
 			config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
 		const schemaUrl = `https://schemas.wp.org/${schemaVersion}/theme.json`;
 
 		const initialThemeJson: any = {
-			version: config.version,
+			version,
 		};
 
 		if (config.addSchema) {
 			initialThemeJson.$schema = schemaUrl;
 		}
 
-		const root = join(
-			getCurrentWorkingDirectory(),
-			addTrailingSlash(config.src),
-		);
-		const files = fastGlob.sync(join(root, `**/*`));
+		const files = fastGlob.sync(join(src, `**/*`));
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
@@ -63,7 +57,7 @@ async function build() {
 					console.log(
 						pc.red(
 							`${file.replace(
-								root,
+								src,
 								'',
 							)}: File not supported. Supported extensions are: json, cjs and mjs.\n`,
 						),
@@ -72,7 +66,7 @@ async function build() {
 				}
 
 				const destination = file
-					.replace(root, '')
+					.replace(src, '')
 					.replace(/\.[^/.]+$/, '');
 
 				const splittedDestination = destination.split('/blocks/');
@@ -102,7 +96,7 @@ async function build() {
 		}, Promise.resolve(initialThemeJson));
 
 		writeFileSync(
-			join(getCurrentWorkingDirectory(), config.dest),
+			config.dest,
 			JSON.stringify(themeJson, null, config.pretty ? '\t' : ''),
 		);
 
