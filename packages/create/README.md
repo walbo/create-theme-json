@@ -19,7 +19,8 @@ Example:
 ```json
 {
 	"scripts": {
-		"build:theme-json": "theme-json"
+		"build:theme-json": "theme-json build",
+		"watch:theme-json": "theme-json watch"
 	},
 	"theme-json": {
 		"src": "theme-json",
