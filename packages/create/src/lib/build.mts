@@ -18,16 +18,16 @@ async function build() {
 	for (const config of configs) {
 		const { src, version } = config;
 
-		const schemaVersion =
-			config.wpVersion === 'trunk' ? 'trunk' : `wp/${config.wpVersion}`;
-		const schemaUrl = `https://schemas.wp.org/${schemaVersion}/theme.json`;
-
 		const initialThemeJson: any = {
 			version,
 		};
 
 		if (config.addSchema) {
-			initialThemeJson.$schema = schemaUrl;
+			const schemaVersion =
+				config.wpVersion === 'trunk'
+					? 'trunk'
+					: `wp/${config.wpVersion}`;
+			initialThemeJson.$schema = `https://schemas.wp.org/${schemaVersion}/theme.json`;
 		}
 
 		const files = fastGlob.sync(join(src, `**/*`));
