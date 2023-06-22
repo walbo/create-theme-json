@@ -10,6 +10,11 @@
 		"directory": "packages/create"
 	},
 	"bugs": "https://github.com/walbo/create-theme-json/issues",
+	"keywords": [
+		"wordpress",
+		"gutenberg",
+		"theme.json"
+	],
 	"license": "GPL-2.0-or-later",
 	"type": "module",
 	"engines": {
