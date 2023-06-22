@@ -15,7 +15,6 @@ const defaultConfig = {
 	dest: 'theme.json',
 	addSchema: false,
 	pretty: false,
-	validateSchema: false,
 	version: 2,
 	wpVersion: 'trunk',
 };

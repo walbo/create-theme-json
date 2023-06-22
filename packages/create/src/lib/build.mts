@@ -5,8 +5,6 @@ import fastGlob from 'fast-glob';
 import { join } from 'path';
 import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
-import Avj from 'ajv-draft-04';
-import axios from 'axios';
 import pc from 'picocolors';
 
 /**
@@ -99,24 +97,6 @@ async function build() {
 			config.dest,
 			JSON.stringify(themeJson, null, config.pretty ? '\t' : ''),
 		);
-
-		if (config.validateSchema) {
-			const schemaChecker = new Avj({
-				allErrors: true,
-				strict: true,
-				allowMatchingProperties: true,
-			});
-			const schema = await axios.get(schemaUrl);
-
-			const validate = schemaChecker.compile(schema.data);
-			const valid = validate(themeJson);
-
-			if (!valid) {
-				validate?.errors?.forEach((err) => {
-					console.log(err);
-				});
-			}
-		}
 	}
 
 	console.log(pc.green('🎉 theme.json created'));
