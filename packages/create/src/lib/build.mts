@@ -8,7 +8,6 @@ import { readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
 import slash from 'slash';
 import { pathToFileURL } from 'node:url';
-import { platform } from 'node:os';
 
 /**
  * Internal dependencies
@@ -39,15 +38,12 @@ async function build() {
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
 
-			if (platform() === 'win32') {
-				file = pathToFileURL(file).toString();
-			}
-
 			try {
 				let fileConfig;
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
-					const importedFile = await import(file);
+					// @ts-ignore
+					const importedFile = await import(pathToFileURL(file));
 					fileConfig = importedFile.default;
 					console.log(file);
 					console.log(fileConfig);
