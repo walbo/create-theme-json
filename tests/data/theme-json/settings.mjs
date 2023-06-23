@@ -1,5 +1,5 @@
-{
-	"border": {
-		"radius": false
-	}
-}
+export default {
+	border: {
+		radius: false,
+	},
+};
