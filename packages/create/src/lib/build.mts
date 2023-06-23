@@ -6,6 +6,7 @@ import { join } from 'path';
 import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
+import slash from 'slash';
 
 /**
  * Internal dependencies
@@ -30,8 +31,8 @@ async function build() {
 			initialThemeJson.$schema = `https://schemas.wp.org/${schemaVersion}/theme.json`;
 		}
 
-		const files = fastGlob.sync(join(src, `**/*`));
-		console.log('FILES', join(src, `**/*`), files);
+		const files = fastGlob.sync(slash(join(src, `**/*`)));
+		console.log('FILES', slash(join(src, `**/*`)), files);
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
