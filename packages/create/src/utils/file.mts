@@ -37,7 +37,7 @@ export async function importFresh(modulePath: string) {
 	const newFilepath = `${filepath.replace(extRegex, '')}${Date.now()}${ext}`;
 
 	await promises.writeFile(newFilepath, fileContent);
-	// @ts-ignore - Fixes a Windows issue
+	// @ts-expect-error - Fixes a Windows issue
 	const module = await import(pathToFileURL(newFilepath));
 	unlink(newFilepath, () => {});
 
