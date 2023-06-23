@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
-import { existsSync, readdirSync } from 'fs';
-import { join, dirname, extname, basename } from 'path';
+import { existsSync, readdirSync, promises, unlink } from 'fs';
+import { join, dirname, extname, basename, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import _ from 'lodash';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,3 +22,23 @@ export const getScripts = (): string[] =>
 
 export const addTrailingSlash = (filePath: string) =>
 	filePath.endsWith('/') ? filePath : `${filePath}/`;
+
+/**
+ * Import a module fresh. This is a workaround for the fact that Node.js caches
+ * modules after the first import.
+ *
+ * @see https://github.com/nodejs/modules/issues/307
+ */
+export async function importFresh(modulePath: string) {
+	const filepath = resolve(modulePath);
+	const fileContent = await promises.readFile(filepath, 'utf8');
+	const ext = extname(filepath);
+	const extRegex = new RegExp(`\\${ext}$`);
+	const newFilepath = `${filepath.replace(extRegex, '')}${Date.now()}${ext}`;
+
+	await promises.writeFile(newFilepath, fileContent);
+	const module = await import(newFilepath);
+	unlink(newFilepath, () => {});
+
+	return module;
+}

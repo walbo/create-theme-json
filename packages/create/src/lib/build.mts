@@ -10,7 +10,7 @@ import pc from 'picocolors';
 /**
  * Internal dependencies
  */
-import { getConfig } from '../utils/index.mjs';
+import { getConfig, importFresh } from '../utils/index.mjs';
 
 async function build() {
 	const configs = await getConfig();
@@ -39,7 +39,7 @@ async function build() {
 				let fileConfig;
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
-					const importedFile = await import(file);
+					const importedFile = await importFresh(file);
 					fileConfig = importedFile.default;
 
 					if (typeof fileConfig === 'function') {
