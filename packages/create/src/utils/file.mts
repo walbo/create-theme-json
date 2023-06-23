@@ -3,7 +3,7 @@
  */
 import { existsSync, readdirSync, promises, unlink } from 'node:fs';
 import { join, dirname, extname, basename, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import _ from 'lodash';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +37,8 @@ export async function importFresh(modulePath: string) {
 	const newFilepath = `${filepath.replace(extRegex, '')}${Date.now()}${ext}`;
 
 	await promises.writeFile(newFilepath, fileContent);
-	const module = await import(newFilepath);
+	// @ts-ignore - Fixes a Windows issue
+	const module = await import(pathToFileURL(newFilepath));
 	unlink(newFilepath, () => {});
 
 	return module;

@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
 import fastGlob from 'fast-glob';
 import _ from 'lodash';
 import pc from 'picocolors';
@@ -39,8 +38,7 @@ async function build() {
 				let fileConfig;
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
-					// @ts-expect-error - Fixes an Windows issue.
-					const importedFile = await importFresh(pathToFileURL(file));
+					const importedFile = await importFresh(file);
 					fileConfig = importedFile.default;
 
 					if (typeof fileConfig === 'function') {

@@ -1,5 +1,5 @@
 export default {
 	border: {
-		radius: false,
+		radius: true,
 	},
 };
