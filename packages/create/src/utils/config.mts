@@ -40,7 +40,7 @@ export async function getConfig(): Promise<Array<typeof defaultConfig>> {
 		// Make src absolute
 		mergedConfig.src = slash(
 			join(
-				slash(getCurrentWorkingDirectory()),
+				getCurrentWorkingDirectory(),
 				addTrailingSlash(mergedConfig.src),
 			),
 		);
