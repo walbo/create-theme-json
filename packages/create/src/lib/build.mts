@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { globSync } from 'glob';
+import fastGlob from 'fast-glob';
 import { join } from 'path';
 import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
@@ -30,7 +30,7 @@ async function build() {
 			initialThemeJson.$schema = `https://schemas.wp.org/${schemaVersion}/theme.json`;
 		}
 
-		const files = globSync(join(src, `**/*`), { nodir: true });
+		const files = fastGlob.sync(join(src, `**/*`));
 		console.log('FILES', join(src, `**/*`), files);
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
