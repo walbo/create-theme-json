@@ -31,6 +31,7 @@ async function build() {
 		}
 
 		const files = fastGlob.sync(join(src, `**/*`));
+		console.log('FILES', files);
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
