@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
 import fastGlob from 'fast-glob';
 import _ from 'lodash';
 import pc from 'picocolors';
@@ -10,7 +9,7 @@ import pc from 'picocolors';
 /**
  * Internal dependencies
  */
-import { getConfig } from '../utils/index.mjs';
+import { getConfig, importFresh } from '../utils/index.mjs';
 
 async function build() {
 	const configs = await getConfig();
@@ -39,8 +38,8 @@ async function build() {
 				let fileConfig;
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
-					// @ts-expect-error - Fixes an Windows issue.
-					const importedFile = await import(pathToFileURL(file));
+					const importedFile = await importFresh(file);
+
 					fileConfig = importedFile.default;
 
 					if (typeof fileConfig === 'function') {
@@ -64,28 +63,30 @@ async function build() {
 					process.exit(1);
 				}
 
-				const destination = file
-					.replace(src, '')
-					.replace(/\.[^/.]+$/, '');
+				if (!_.isEmpty(fileConfig)) {
+					const destination = file
+						.replace(src, '')
+						.replace(/\.[^/.]+$/, '');
 
-				const splittedDestination = destination.split('/blocks/');
+					const splittedDestination = destination.split('/blocks/');
 
-				if (splittedDestination[0]) {
-					let dest = splittedDestination[0].split('/');
-					dest = dest.map(_.camelCase);
+					if (splittedDestination[0]) {
+						let dest = splittedDestination[0].split('/');
+						dest = dest.map(_.camelCase);
 
-					if (splittedDestination[1]) {
-						const [blockNamespace, blockName, ...blockDest] =
-							splittedDestination[1].split('/');
-						dest = [
-							...dest,
-							'blocks',
-							`${blockNamespace}/${blockName}`,
-							...blockDest,
-						];
+						if (splittedDestination[1]) {
+							const [blockNamespace, blockName, ...blockDest] =
+								splittedDestination[1].split('/');
+							dest = [
+								...dest,
+								'blocks',
+								`${blockNamespace}/${blockName}`,
+								...blockDest,
+							];
+						}
+
+						_.set(nextValue, dest, fileConfig);
 					}
-
-					_.set(nextValue, dest, fileConfig);
 				}
 			} catch (err) {
 				console.log(file, err);
