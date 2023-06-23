@@ -10,7 +10,7 @@ import pc from 'picocolors';
 /**
  * Internal dependencies
  */
-import { getConfig } from '../utils/index.mjs';
+import { getConfig, importFresh } from '../utils/index.mjs';
 
 async function build() {
 	const configs = await getConfig();
@@ -40,7 +40,7 @@ async function build() {
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
 					// @ts-expect-error - Fixes an Windows issue.
-					const importedFile = await import(pathToFileURL(file));
+					const importedFile = await importFresh(pathToFileURL(file));
 					fileConfig = importedFile.default;
 
 					if (typeof fileConfig === 'function') {
