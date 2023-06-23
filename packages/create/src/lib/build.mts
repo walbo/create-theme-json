@@ -7,6 +7,8 @@ import _ from 'lodash';
 import { readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
 import slash from 'slash';
+import { pathToFileURL } from 'node:url';
+import { platform } from 'node:os';
 
 /**
  * Internal dependencies
@@ -36,6 +38,10 @@ async function build() {
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
+
+			if (platform() === 'win32') {
+				file = pathToFileURL(file).toString();
+			}
 
 			try {
 				let fileConfig;
