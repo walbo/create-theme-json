@@ -29,7 +29,7 @@ export const addTrailingSlash = (filePath: string) =>
  *
  * @see https://github.com/nodejs/modules/issues/307
  */
-export async function importFresh(modulePath: string) {
+export async function importFresh(modulePath: string): Promise<any> {
 	const filepath = resolve(modulePath);
 	const fileContent = await promises.readFile(filepath, 'utf8');
 	const ext = extname(filepath);
@@ -37,8 +37,14 @@ export async function importFresh(modulePath: string) {
 	const newFilepath = `${filepath.replace(extRegex, '')}${Date.now()}${ext}`;
 
 	await promises.writeFile(newFilepath, fileContent);
+
 	// @ts-expect-error - Fixes a Windows issue
-	const module = await import(pathToFileURL(newFilepath));
+	const module = await import(pathToFileURL(newFilepath)).catch((err) => {
+		unlink(newFilepath, () => {});
+		console.log(err.stack.replace(pathToFileURL(newFilepath), modulePath));
+		return { default: '' };
+	});
+
 	unlink(newFilepath, () => {});
 
 	return module;

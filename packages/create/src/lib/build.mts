@@ -39,6 +39,7 @@ async function build() {
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
 					const importedFile = await importFresh(file);
+
 					fileConfig = importedFile.default;
 
 					if (typeof fileConfig === 'function') {
@@ -62,28 +63,30 @@ async function build() {
 					process.exit(1);
 				}
 
-				const destination = file
-					.replace(src, '')
-					.replace(/\.[^/.]+$/, '');
+				if (!_.isEmpty(fileConfig)) {
+					const destination = file
+						.replace(src, '')
+						.replace(/\.[^/.]+$/, '');
 
-				const splittedDestination = destination.split('/blocks/');
+					const splittedDestination = destination.split('/blocks/');
 
-				if (splittedDestination[0]) {
-					let dest = splittedDestination[0].split('/');
-					dest = dest.map(_.camelCase);
+					if (splittedDestination[0]) {
+						let dest = splittedDestination[0].split('/');
+						dest = dest.map(_.camelCase);
 
-					if (splittedDestination[1]) {
-						const [blockNamespace, blockName, ...blockDest] =
-							splittedDestination[1].split('/');
-						dest = [
-							...dest,
-							'blocks',
-							`${blockNamespace}/${blockName}`,
-							...blockDest,
-						];
+						if (splittedDestination[1]) {
+							const [blockNamespace, blockName, ...blockDest] =
+								splittedDestination[1].split('/');
+							dest = [
+								...dest,
+								'blocks',
+								`${blockNamespace}/${blockName}`,
+								...blockDest,
+							];
+						}
+
+						_.set(nextValue, dest, fileConfig);
 					}
-
-					_.set(nextValue, dest, fileConfig);
 				}
 			} catch (err) {
 				console.log(file, err);
