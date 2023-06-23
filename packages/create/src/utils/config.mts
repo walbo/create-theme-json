@@ -3,6 +3,7 @@
  */
 import { cosmiconfig } from 'cosmiconfig';
 import { join } from 'path';
+import slash from 'slash';
 
 /**
  * Internal dependencies
@@ -37,9 +38,11 @@ export async function getConfig(): Promise<Array<typeof defaultConfig>> {
 		};
 
 		// Make src absolute
-		mergedConfig.src = join(
-			getCurrentWorkingDirectory(),
-			addTrailingSlash(mergedConfig.src),
+		mergedConfig.src = slash(
+			join(
+				getCurrentWorkingDirectory(),
+				addTrailingSlash(mergedConfig.src),
+			),
 		);
 
 		// Make dest absolute
