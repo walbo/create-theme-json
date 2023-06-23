@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
-import { existsSync, readdirSync, promises, unlink } from 'fs';
-import { join, dirname, extname, basename, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { existsSync, readdirSync, promises, unlink } from 'node:fs';
+import { join, dirname, extname, basename, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import _ from 'lodash';
 
 const __filename = fileURLToPath(import.meta.url);
