@@ -1,13 +1,11 @@
 /**
  * External dependencies
  */
-import { join } from 'node:path';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import fastGlob from 'fast-glob';
 import _ from 'lodash';
 import pc from 'picocolors';
-import slash from 'slash';
 
 /**
  * Internal dependencies
@@ -32,7 +30,7 @@ async function build() {
 			initialThemeJson.$schema = `https://schemas.wp.org/${schemaVersion}/theme.json`;
 		}
 
-		const files = fastGlob.sync(slash(join(src, `**/*`)));
+		const files = fastGlob.sync(src + '**/*');
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
