@@ -1,16 +1,16 @@
 /**
  * External dependencies
  */
+import { readFileSync, writeFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import fastGlob from 'fast-glob';
-import { join } from 'path';
 import _ from 'lodash';
-import { readFileSync, writeFileSync } from 'fs';
 import pc from 'picocolors';
 
 /**
  * Internal dependencies
  */
-import { getConfig, importFresh } from '../utils/index.mjs';
+import { getConfig } from '../utils/index.mjs';
 
 async function build() {
 	const configs = await getConfig();
@@ -30,7 +30,7 @@ async function build() {
 			initialThemeJson.$schema = `https://schemas.wp.org/${schemaVersion}/theme.json`;
 		}
 
-		const files = fastGlob.sync(join(src, `**/*`));
+		const files = fastGlob.sync(src + '**/*');
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			const nextValue = await previousValue;
@@ -39,7 +39,8 @@ async function build() {
 				let fileConfig;
 
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
-					const importedFile = await importFresh(file);
+					// @ts-expect-error - Fixes an Windows issue.
+					const importedFile = await import(pathToFileURL(file));
 					fileConfig = importedFile.default;
 
 					if (typeof fileConfig === 'function') {
