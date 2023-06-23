@@ -41,6 +41,8 @@ async function build() {
 				if (file.endsWith('.cjs') || file.endsWith('.mjs')) {
 					const importedFile = await import(file);
 					fileConfig = importedFile.default;
+					console.log(file);
+					console.log(fileConfig);
 
 					if (typeof fileConfig === 'function') {
 						fileConfig = fileConfig();
