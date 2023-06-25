@@ -24,11 +24,9 @@
 		"test:watch": "npm run build && node ./packages/create/dist/bin/theme-json.mjs watch"
 	},
 	"workspaces": [
-		"packages/*"
+		"packages/*",
+		"tests/plugins/*"
 	],
-	"dependencies": {
-		"@theme-json/create": "*"
-	},
 	"devDependencies": {
 		"@types/cross-spawn": "6.0.2",
 		"@types/jest": "^29.5.2",
@@ -43,6 +41,9 @@
 		"src": "./tests/data/theme-json",
 		"dest": "./tests/theme.json",
 		"addSchema": false,
-		"pretty": true
+		"pretty": true,
+		"plugins": [
+			"@theme-json/test-plugin"
+		]
 	}
 }
