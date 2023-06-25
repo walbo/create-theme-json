@@ -74,7 +74,7 @@ theme-json
 
 ## File examples
 
-### .mjs
+### theme-json/settings/border.mjs
 
 ```mjs
 export default {
@@ -84,7 +84,7 @@ export default {
 };
 ```
 
-### .json
+### theme-json/settings/border.json
 
 ```json
 {
@@ -94,7 +94,7 @@ export default {
 }
 ```
 
-### .cjs
+### theme-json/settings/border.cjs
 
 ```cjs
 module.exports = {
