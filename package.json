@@ -17,7 +17,8 @@
 	},
 	"scripts": {
 		"build:create": "del-cli ./packages/create/dist && tsc -p ./packages/create/tsconfig.json && chmod u+x ./packages/create/dist/bin/theme-json.mjs",
-		"build": "npm run build:create",
+		"build:validate": "del-cli ./packages/validate/dist && tsc -p ./packages/validate/tsconfig.json",
+		"build": "npm run build:create && npm run build:validate",
 		"format": "prettier --write .",
 		"test": "jest",
 		"test:build": "npm run build && node ./packages/create/dist/bin/theme-json.mjs build",
@@ -43,7 +44,8 @@
 		"addSchema": true,
 		"pretty": true,
 		"plugins": [
-			"@theme-json/test-plugin"
+			"@theme-json/test-plugin",
+			"@theme-json/validate"
 		]
 	}
 }
