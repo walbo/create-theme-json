@@ -32,13 +32,9 @@ async function build() {
 		}
 
 		if (!!plugins.before.length) {
-			initialThemeJson = plugins.before.reduce(
-				(previousValue, plugin) => {
-					const nextValue = plugin(previousValue, config);
-					return nextValue;
-				},
-				initialThemeJson,
-			);
+			for (const plugin of plugins.before) {
+				initialThemeJson = await plugin(initialThemeJson, config);
+			}
 		}
 
 		const files = fastGlob.sync(src + '**/*');
@@ -109,10 +105,9 @@ async function build() {
 		}, Promise.resolve(initialThemeJson));
 
 		if (!!plugins.after.length) {
-			themeJson = plugins.after.reduce((previousValue, plugin) => {
-				const nextValue = plugin(previousValue, config);
-				return nextValue;
-			}, themeJson);
+			for (const plugin of plugins.after) {
+				themeJson = await plugin(themeJson, config);
+			}
 		}
 
 		writeFileSync(
