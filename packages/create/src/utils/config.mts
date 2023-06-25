@@ -11,20 +11,31 @@ import slash from 'slash';
 import { getCurrentWorkingDirectory } from './process.mjs';
 import { addTrailingSlash } from './file.mjs';
 
-const defaultConfig = {
+interface Config {
+	src: string;
+	dest: string;
+	addSchema: boolean;
+	pretty: boolean;
+	version: number;
+	wpVersion: string;
+	plugins: string[];
+}
+
+const defaultConfig: Config = {
 	src: 'theme-json',
 	dest: 'theme.json',
 	addSchema: false,
 	pretty: false,
 	version: 2,
 	wpVersion: 'trunk',
+	plugins: [],
 };
 
-export async function getConfig(): Promise<Array<typeof defaultConfig>> {
+export async function getConfig(): Promise<Array<Config>> {
 	const explorerSync = cosmiconfig('theme-json');
 
 	const config = (await explorerSync.search()) || { config: {} };
-	const optimizedConfig: Array<typeof defaultConfig> = [];
+	const optimizedConfig: Array<Config> = [];
 
 	if (!Array.isArray(config.config)) {
 		config.config = [config.config];
@@ -55,4 +66,26 @@ export async function getConfig(): Promise<Array<typeof defaultConfig>> {
 	}
 
 	return optimizedConfig;
+}
+
+export async function getPlugins(config: Config) {
+	const before = [];
+	const after = [];
+
+	for (const plugin of config.plugins) {
+		const importedPlugin = await import(plugin);
+
+		if (importedPlugin.before) {
+			before.push(importedPlugin.before);
+		}
+
+		if (importedPlugin.after) {
+			after.push(importedPlugin.after);
+		}
+	}
+
+	return {
+		before,
+		after,
+	};
 }

@@ -30,6 +30,7 @@
 		"@theme-json/create": "*"
 	},
 	"devDependencies": {
+		"@theme-json/test-plugin": "file:./tests/plugins/test-plugin",
 		"@types/cross-spawn": "6.0.2",
 		"@types/jest": "^29.5.2",
 		"@types/lodash": "^4.14.195",
@@ -43,6 +44,9 @@
 		"src": "./tests/data/theme-json",
 		"dest": "./tests/theme.json",
 		"addSchema": false,
-		"pretty": true
+		"pretty": true,
+		"plugins": [
+			"@theme-json/test-plugin"
+		]
 	}
 }

@@ -9,15 +9,16 @@ import pc from 'picocolors';
 /**
  * Internal dependencies
  */
-import { getConfig, importFresh } from '../utils/index.mjs';
+import { getConfig, getPlugins, importFresh } from '../utils/index.mjs';
 
 async function build() {
 	const configs = await getConfig();
 
 	for (const config of configs) {
 		const { src, version } = config;
+		const plugins = await getPlugins(config);
 
-		const initialThemeJson: any = {
+		let initialThemeJson: any = {
 			version,
 		};
 
@@ -27,6 +28,16 @@ async function build() {
 					? 'trunk'
 					: `wp/${config.wpVersion}`;
 			initialThemeJson.$schema = `https://schemas.wp.org/${schemaVersion}/theme.json`;
+		}
+
+		if (!!plugins.before.length) {
+			initialThemeJson = plugins.before.reduce(
+				(previousValue, plugin) => {
+					const nextValue = plugin(previousValue, config);
+					return nextValue;
+				},
+				initialThemeJson,
+			);
 		}
 
 		const files = fastGlob.sync(src + '**/*');
@@ -94,6 +105,13 @@ async function build() {
 
 			return nextValue;
 		}, Promise.resolve(initialThemeJson));
+
+		if (!!plugins.after.length) {
+			initialThemeJson = plugins.after.reduce((previousValue, plugin) => {
+				const nextValue = plugin(previousValue, config);
+				return nextValue;
+			}, themeJson);
+		}
 
 		writeFileSync(
 			config.dest,
