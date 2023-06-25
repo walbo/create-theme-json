@@ -40,7 +40,7 @@
 	"theme-json": {
 		"src": "./tests/data/theme-json",
 		"dest": "./tests/theme.json",
-		"addSchema": false,
+		"addSchema": true,
 		"pretty": true,
 		"plugins": [
 			"@theme-json/test-plugin"
