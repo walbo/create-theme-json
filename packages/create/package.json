@@ -1,6 +1,6 @@
 {
 	"name": "@theme-json/create",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Split WordPress theme.json into smaller files.",
 	"author": "Petter Walbø Johnsgård",
 	"homepage": "https://github.com/walbo/create-theme-json/blob/main/packages/create/README.md",

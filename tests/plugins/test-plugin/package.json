@@ -2,5 +2,6 @@
 	"name": "@theme-json/test-plugin",
 	"private": true,
 	"type": "module",
-	"main": "index.mjs"
+	"main": "index.mjs",
+	"version": "0.0.3"
 }
