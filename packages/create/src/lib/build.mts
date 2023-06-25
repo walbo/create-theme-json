@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import fastGlob from 'fast-glob';
 import _ from 'lodash';
 import pc from 'picocolors';
+import deepMerge from 'deepmerge';
 
 /**
  * Internal dependencies
@@ -43,7 +44,7 @@ async function build() {
 		const files = fastGlob.sync(src + '**/*');
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
-			const nextValue = await previousValue;
+			let nextValue = await previousValue;
 
 			try {
 				let fileConfig;
@@ -96,7 +97,8 @@ async function build() {
 							];
 						}
 
-						_.set(nextValue, dest, fileConfig);
+						const newNextValue = _.set({}, dest, fileConfig);
+						nextValue = deepMerge(nextValue, newNextValue);
 					}
 				}
 			} catch (err) {
@@ -107,7 +109,7 @@ async function build() {
 		}, Promise.resolve(initialThemeJson));
 
 		if (!!plugins.after.length) {
-			initialThemeJson = plugins.after.reduce((previousValue, plugin) => {
+			themeJson = plugins.after.reduce((previousValue, plugin) => {
 				const nextValue = plugin(previousValue, config);
 				return nextValue;
 			}, themeJson);

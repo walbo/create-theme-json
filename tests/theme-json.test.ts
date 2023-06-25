@@ -3,7 +3,16 @@
  */
 const themeJson = require('./theme.json');
 
-test('Check build file', () => {
-	expect(themeJson.version).toBe(2);
-	expect(themeJson.settings.border.radius).toBeFalsy();
+describe('Theme JSON', () => {
+	it('should add version', () => {
+		expect(themeJson.version).toBe(2);
+	});
+
+	it('should merge', () => {
+		// From .mjs file
+		expect(themeJson.settings.border.radius).toBeFalsy();
+
+		// From plugin
+		expect(themeJson.settings.border.width).toBeTruthy();
+	});
 });
