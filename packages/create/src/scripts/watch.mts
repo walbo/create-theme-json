@@ -18,10 +18,15 @@ async function watch() {
 	const roots = configs.map((config) => config.src);
 
 	// Watch for changes
-	chokidar.watch(roots, { ignoreInitial: true }).on('all', (event, path) => {
-		console.log(event, path);
-		build();
-	});
+	chokidar
+		.watch(roots, {
+			ignoreInitial: true,
+			ignored: /.*\.temp-fresh-import\.[mc]js$/,
+		})
+		.on('all', (event, path) => {
+			console.log(event, path);
+			build();
+		});
 }
 
 watch();

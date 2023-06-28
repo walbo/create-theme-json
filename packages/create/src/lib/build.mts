@@ -37,7 +37,9 @@ async function build() {
 			}
 		}
 
-		const files = fastGlob.sync(src + '**/*');
+		const files = fastGlob.sync(src + '**/*', {
+			ignore: [src + '**/*.temp-fresh-import.{mjs,cjs}'],
+		});
 
 		let themeJson = await files.reduce(async (previousValue, file) => {
 			let nextValue = await previousValue;

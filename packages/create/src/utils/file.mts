@@ -34,7 +34,10 @@ export async function importFresh(modulePath: string): Promise<any> {
 	const fileContent = await promises.readFile(filepath, 'utf8');
 	const ext = extname(filepath);
 	const extRegex = new RegExp(`\\${ext}$`);
-	const newFilepath = `${filepath.replace(extRegex, '')}${Date.now()}${ext}`;
+	const newFilepath = `${filepath.replace(
+		extRegex,
+		'',
+	)}${Date.now()}.temp-fresh-import${ext}`;
 
 	await promises.writeFile(newFilepath, fileContent);
 
