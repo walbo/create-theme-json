@@ -1,6 +1,6 @@
 {
 	"name": "@theme-json/validate",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Validate theme.json files when using @theme-json/create",
 	"author": "Petter Walbø Johnsgård",
 	"homepage": "https://github.com/walbo/create-theme-json/blob/main/packages/validate/README.md",
