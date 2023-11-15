@@ -2,13 +2,13 @@
 	"name": "theme-json",
 	"private": true,
 	"description": "Split WordPress theme.json into smaller files.",
-	"author": "Petter Walbø Johnsgård",
-	"homepage": "https://github.com/walbo/create-theme-json/blob/main/README.md",
+	"author": "Dekode Interaktiv AS",
+	"homepage": "https://github.com/DekodeInteraktiv/create-theme-json/blob/main/README.md",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/walbo/create-theme-json.git"
+		"url": "https://github.com/DekodeInteraktiv/create-theme-json.git"
 	},
-	"bugs": "https://github.com/walbo/create-theme-json/issues",
+	"bugs": "https://github.com/DekodeInteraktiv/create-theme-json/issues",
 	"license": "GPL-2.0-or-later",
 	"type": "module",
 	"engines": {
